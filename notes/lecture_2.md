@@ -1,7 +1,12 @@
+# Solutions
+- [Ceph](https://ceph.io/en/): Ceph is an open source distributed storage system. It provides block devices, regular file systems, and S3 compatible storage.
+- [Rook](https://rook.io/): Open-Source,
+Cloud-Native Storage for Kubernetes
+Production ready management for File, Block and Object Storage
+
+
 # Volumes
 
-- volumes: 
-- mounts:
 - volumes vs. mounts in the manifests
 
 - pod knows about volumes, containers knows where to mount.
@@ -68,4 +73,28 @@ kc get pvc
 
 # delete the pvc
 kc delete pvc lab-claim
+```
+
+# Labels and Selectors
+```
+# - Use equality based selectors to select a group of objects
+# - Use set based selectors to select a group of objects
+# - Creating an output column for a label (optional)
+kubectl get pv
+kubectl get pv --show-labels
+kubectl get pv -l style=hippie
+kubectl get pv -L style
+
+# - Add a label imperatively
+kc label pvc pvc-djiang108 lab=florence
+
+# get a pvc w label
+get pvc -l lab=florence
+
+# - Change a label imperatively
+kc label pvc pvc-djiang108 lab=florencej --overwrite
+get pvc -l lab=florencej
+
+# - Remove a label imperatively
+kc label pvc pvc-djiang108 lab-
 ```

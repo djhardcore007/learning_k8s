@@ -9,10 +9,26 @@ spec:
     imagePullPolicy: Always
     command: [ "sleep" ]
     args: [ "inf" ]
+    resources:
+      limits:
+        memory: 100Mi
+    volumeMounts:
+    - name: joint-volume
+      mountPath: /m1
   - name: debugshell-b
     image: k8s.ignition-training.com/djiang108/debugshell:1.0
     imagePullPolicy: Always
     command: [ "sleep" ]
     args: [ "inf" ]
+    resources:
+      limits:
+        memory: 100Mi
+    volumeMounts:
+    - name: joint-volume
+      mountPath: /m2
   imagePullSecrets:
   - name: regcred
+  volumes:
+  - name: joint-volume
+    emptyDir:
+      sizeLimit: 10Mi

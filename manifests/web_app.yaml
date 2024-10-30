@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-app
+  labels:
+    app: hello
+spec:
+  containers:
+  - name: web-app-container
+    image: k8s.ignition-training.com/djiang108/lab501:1.0  # insert image here!
+    imagePullPolicy: Always
+    resources:
+      limits:
+        memory: 30Mi
+    stdin: true
+    tty: true
+    ports:
+      - name: greeting-port
+        containerPort: 4574
+  imagePullSecrets:
+  - name: regcred

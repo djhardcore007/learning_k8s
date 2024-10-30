@@ -1,4 +1,4 @@
-# Solutions
+# k8s Storage Solutions
 - [Ceph](https://ceph.io/en/): Ceph is an open source distributed storage system. It provides block devices, regular file systems, and S3 compatible storage.
 - [Rook](https://rook.io/): Open-Source,
 Cloud-Native Storage for Kubernetes
@@ -75,7 +75,7 @@ kc get pvc
 kc delete pvc lab-claim
 ```
 
-# Labels and Selectors
+# Labels: Selectors | View Annotations
 ```
 # - Use equality based selectors to select a group of objects
 # - Use set based selectors to select a group of objects
@@ -97,4 +97,66 @@ get pvc -l lab=florencej
 
 # - Remove a label imperatively
 kc label pvc pvc-djiang108 lab-
+
+# view annotations
+kc get node worker1 -o yaml
 ```
+
+# Cluster IP Addres7
+you can find cluster  pod ip address from `kc describe pod {pod_name}`
+
+workflow:
+- `GET xyz/abc`
+- get into the ports
+- `xyz`
+- it hits certain cluster IP address.
+
+# Dynamic Web Applications
+
+- Create a dynamic web application
+
+    ```
+    cd src
+    # write a dockerfile and server.py
+    # cp from: https://github.com/ignition-training/k8s-solutions/blob/main/lab501/python/manifests/pod-externalimage.yaml
+    ```
+
+- Create a container for the web application
+    ```
+    # build an image.
+    podman build -t lab501:1.0 src/. # Dockerfile lives here.
+    # check image 
+    podman image ls
+    # make sure you could see `localhost/lab501` there.
+    # tag the image
+    podman tag lab501:1.0 k8s.ignition-training.com/djiang108/lab501:1.0
+    podman image ls
+    # make sure you could see `k8s.ignition-training.com/djiang108/lab501` there
+    ```
+- Push the container into the private registry
+    ```
+    # push the image
+    podman push k8s.ignition-training.com/djiang108/lab501:1.0
+    ```
+- Run the web application in a pod
+    ```
+    # insert the image into manifests/web_app.yaml
+    # write web_app.yaml.
+    # mostly you need to figure out where to put the ports.
+    kc apply -f manifests/web_app.yaml
+    # check
+    kc get pods
+    # make sure it is running!
+    kc events --for=pod/web-app
+    ```
+- Access the web application in the pod with wget.
+    ```
+    # decribe pod to get its IP addr
+    kc describe pod web-app
+    # cp ip addr: 192.168.42.101
+    export THEIPADDRESS=192.168.42.101
+    wget -O - -nv $THEIPADDRESS:4574/
+
+    # you should see sth like this:
+    # Hello Unknown. The current time is 2024-10-30 15:50:07.1807422024-10-30 15:50:07 URL:http://192.168.42.101:4574/ [61] -> "-" [1]
+    ```

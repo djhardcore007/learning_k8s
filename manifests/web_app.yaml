@@ -17,5 +17,15 @@ spec:
     ports:
       - name: greeting-port
         containerPort: 4574
+    env:
+    - name: ENVVARNAME
+      value: Open
+      envFrom:
+      - configMapRef:
+        name: CONFIGMAPNAME 
+        valueFrom:
+          configMapKeyRef:
+            name: CONFIGMAPNAME
+            key: KEYNAME
   imagePullSecrets:
   - name: regcred

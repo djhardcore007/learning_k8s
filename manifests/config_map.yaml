@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  domainname: selectivesuitors.com
+  sitename: Selective Suitors
+  db.ini: |
+    [database]
+    server = 172.17.17.8    
+    port = 143
+    schema = "selsuit.dbx"

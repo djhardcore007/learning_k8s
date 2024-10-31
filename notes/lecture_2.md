@@ -160,3 +160,7 @@ workflow:
     # you should see sth like this:
     # Hello Unknown. The current time is 2024-10-30 15:50:07.1807422024-10-30 15:50:07 URL:http://192.168.42.101:4574/ [61] -> "-" [1]
     ```
+- Port Forwarding s.t. you can access in your browser
+    ```
+    kubectl port-forward web-app 9222:4574
+    ```

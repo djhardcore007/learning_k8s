@@ -22,6 +22,10 @@ you first need to have a pod running, and then you connect your pod w the servic
     kc apply -f manifests/web_service.yaml
     # check
     kubectl get service
+    # check the ip
+    kc describe pod web-app
+    # get ip addr: 192.168.182.26
+    wget -O - -nv 192.168.182.26:4574
     ```
 - Observe service end points
     you ll see sth like this:
@@ -90,7 +94,26 @@ you first need to have a pod running, and then you connect your pod w the servic
 - you store config maps as volumes
 - Create a ConfigMap
     ```
-    
+    # manifests/config_map.yaml
+    kc apply -f manifests/config_map.yaml
     ```
 - Use that ConfigMap as the source of a group of environment variables
 - Use that ConfigMap as the source of individual environment variables (Optional)
+
+# External Config: Consuming a ConfigMap as a Volume
+- Change the server to read configuration from a file
+- Mount the ConfigMap as a Volume
+- Observe changes in the ConfigMap
+
+observe the volume file in `manifests/web_app.yaml`
+
+
+# Using Binary Data into ConfigMap
+
+[k8s doc](https://kubernetes.io/docs/concepts/configuration/configmap/)
+
+- A `ConfigMap` is an API object used to store **non-confidential data** in key-value pairs. Pods can consume `ConfigMaps` as environment variables, command-line arguments, or as configuration files in a volume.
+
+- config map is just a k-v storage for k8s.
+- constraints: 1.5 MB
+- formats: 1. utf-8 string 2. binary data

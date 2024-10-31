@@ -154,7 +154,7 @@ workflow:
     # decribe pod to get its IP addr
     kc describe pod web-app
     # cp ip addr: 192.168.42.101
-    export THEIPADDRESS=192.168.42.101
+    export THEIPADDRESS=192.168.182.26
     wget -O - -nv $THEIPADDRESS:4574/
 
     # you should see sth like this:

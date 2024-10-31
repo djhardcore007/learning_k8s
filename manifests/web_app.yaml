@@ -5,6 +5,12 @@ metadata:
   labels:
     app: hello
 spec:
+  imagePullSecrets:
+  - name: regcred
+  volumes:
+  - name: config-volume
+    configMap:
+      name: app-config 
   containers:
   - name: web-app-container
     image: k8s.ignition-training.com/djiang108/lab501:1.0  # insert image here!
@@ -12,20 +18,18 @@ spec:
     resources:
       limits:
         memory: 30Mi
+    envFrom: # This will bring in more variables than we use, no problem though
+    - configMapRef:
+        name: app-config 
+    env:
+    - name: GREETING_LOCATION
+      value: /data/GREETING
     stdin: true
     tty: true
     ports:
       - name: greeting-port
-        containerPort: 4574
-    env:
-    - name: ENVVARNAME
-      value: Open
-      envFrom:
-      - configMapRef:
-        name: CONFIGMAPNAME 
-        valueFrom:
-          configMapKeyRef:
-            name: CONFIGMAPNAME
-            key: KEYNAME
-  imagePullSecrets:
-  - name: regcred
+        containerPort: 4545
+    volumeMounts:
+      - name: config-volume
+        mountPath: /data
+        readOnly: true

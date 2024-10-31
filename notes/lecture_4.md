@@ -23,9 +23,42 @@ Note that this table is not exhaustive, and there may be additional features and
 # Higher Level Workloads - Creating Deployments
 
 - Create a Deployment
+    ```
+    # create manifests/deployment.yaml
+    kc apply -f manifests/deployment.yaml
+    kc get deployments
+    ```
 - Understand Deployment's pod names
+    ```
+    kc get pods
+    kc get pods -l app=hello
+    ```
 - Observe the Deployment self healing
+    ```
+    kc delete pod lab701-nodejs-external-84c45646fc-zk4sl
+    kc get pods -l app=hello
+    # still 3 replicas running
+    ```
 - Observe the Deployment rolling out
+    ```
+    # add env RANDOMLY_ADDED_VAR in the deployment.yaml
+    # this represents a new release in the software
+    kc get pods
+    kc apply -f manifests/deployment.yaml
+    kc get pods
+    # if you r quick u ll see the old pods getting terminating...
+
+    NAME                                      READY   STATUS             RESTARTS        AGE
+    debugshell                                1/1     Running             0               2d23h
+    lab701-nodejs-external-744778fc4c-9sq4f   1/1     Running             0               2s
+    lab701-nodejs-external-744778fc4c-hr8jr   0/1     ContainerCreating   0               0s
+    lab701-nodejs-external-744778fc4c-x9hjw   1/1     Running             0               4s
+    lab701-nodejs-external-84c45646fc-gjlmc   1/1     Terminating         0               8m52s
+    lab701-nodejs-external-84c45646fc-ntfkd   1/1     Running             0               10m
+    vscode-djiang108-76bc7976-9wwds           1/1     Running             0               3d2h
+    web-app                                   1/1     Running             0               104m
+    withlimits                                1/1     Running             1 (2d23h ago)   2d23h
+    ```
 - Observe the service load balancing (Optional)
 
 # Rollouts
